@@ -3,7 +3,7 @@ use project
 
 drop table 
 Login_account, 
-User_Logins, 
+UserLogins, 
 UserSecurityAnswers,
 UserSecurityQuestions,
 Customer_Account,
@@ -12,10 +12,10 @@ OverDraftLog,
 Customer,
 TransactionLog,
 AccountType,
-SavingInterestRates,
+SavingsInterestRates,
 AccountStatusType,
 FailedTransctionLog,
-TransctionType,
+TransactionType,
 LoginErrorLog,
 Employee,
 FaieldTransactionsErrorType;
@@ -23,10 +23,10 @@ FaieldTransactionsErrorType;
 create table Login_account
 (
 UserLoginID smallint,
-AccoutID int 
+AccountID int 
 );
 
-create table User_Logins
+create table UserLogins
 ( 
 UserLoginID smallint primary key,
 UserLogin varchar(15),
@@ -36,7 +36,8 @@ UserPassword varchar(20)
 create table UserSecurityAnswers
 ( 
 UserLoginID smallint primary key,
-UserSecuritynswer varchar(25)
+UserSecurityanswer varchar(25),
+UserSecurityQuestionID tinyint
 );
 
 create table UserSecurityQuestions
@@ -53,11 +54,11 @@ CustomerID int
 
 create table Account
 ( 
-AccountID int,
+AccountID int primary key,
 CurrentBalance int,
 AccountTypeID tinyint,
 AccountSttusTypeID tinyint,
-AccountSavingRateID tinyint
+InterestSavingsRateID tinyint
 );
 
 Create table OverDraftLog
@@ -92,6 +93,7 @@ Create table TransactionLog
 ( 
 TransactionID int primary key,
 TransactionDate datetime,
+TransactionTypeID tinyint,
 TransactionAmount money,
 NewBalance money,
 AccountID int,
@@ -106,9 +108,9 @@ AccountTypeID tinyint primary key,
 AccountTypeDescription varchar(30)
 );
 
-create table SavingInterestRates
+create table SavingsInterestRates
 (
-InterestSavigRateID tinyint primary key,
+InterestSavingsRateID tinyint primary key,
 InterestRateValue numeric(9,9),
 InterestRateDescription varchar(20),
 );
@@ -127,7 +129,7 @@ FailedTransactionErrorTime varchar(50),
 FailedTransactionXML xml
 );
 
-Create table TransctionType
+Create table TransactionType
 (
 TransactionTypeID tinyint primary key,
 TransactionTypeName char(10),
@@ -155,3 +157,49 @@ create table FaieldTransactionsErrorType
 FailedTransactionErrorTypeID tinyint primary key,
 FailedTransactionDescription varchar(50)
 );
+
+
+/*the name faculty_dept_fk is just for naming and used for the joint
+**************Alter table child add constraint constrain_name 
+foreign key (name in the child table) references parent(name in prent tale)*************/
+/* 
+Alter table Login_Account
+drop constraint FK1_login_account, FK2_login_account
+
+alter table UserSecurityAnswers
+drop constraint FK2_UserSecurityAnswers, FK4_UserSecurityAnswers
+*/ 
+
+alter table Login_Account add constraint FK1_login_account 
+foreign key (UserLoginID) references UserLogins(UserLoginID); 
+
+alter table Login_Account add constraint FK2_login_account 
+foreign key (AccountID) references Account(AccountID); 
+
+
+alter table UserSecurityAnswers add constraint FK2_UserSecurityAnswers 
+foreign key (UserLoginID) references UserLogins(UserLoginID);
+
+alter table UserSecurityAnswers add constraint FK4_UserSecurityAnswers 
+foreign key (UserSecurityQuestionID) references UserSecurityQuestions(UserSecurityQuestionID);
+
+alter table Customer_Account add constraint FK1_Customer_Account 
+foreign key (AccountID) references Account(AccountID);
+
+alter table Customer_Account add constraint FK2_Customer_Account 
+foreign key (CustomerID) references Customer(CustomerID);
+
+alter table Account add constraint FK4_Account 
+foreign key (AccountTypeID) references AccountType(AccountTypeID);
+
+alter table Account add constraint FK5_Account 
+foreign key (AccountStatusTypeID) references AccountStatusType(AccountStatusTypeID);
+
+alter table Account add constraint FK6_Account 
+foreign key (InterestSavingsRateID) references SavingsInterestRates(InterestSavingsRateID);
+
+alter table OverDraftLog add constraint FK1_OverDraftLog 
+foreign key (AccountID) references Account(AccountID);
+
+alter table TransactionLog add constraint FK7_TransactionLog 
+foreign key (TransactionTypeID) references TransactionType(TransactionTypeID);
