@@ -177,6 +177,8 @@ drop constraint FK1_Customer_Account, FK2_Customer_Account
 Alter table Account
 drop constraint FK4_Account, FK5_Account, FK6_Account
 
+alter table Customer
+drop constraint FK1_Customer, FK2_Customer
 
 /*foreign keys*/
 alter table Login_Account add constraint FK1_login_account 
@@ -285,19 +287,41 @@ values
 
 insert into OverDraftLog (AccountID, OverDraftDate, OverDraftAmount, OverDraftTransactionXml)
 values
-(4567, '2018-11-11 ', 500.00, 'Successfull' ),
-(8910, '2019-01-05 ', 250.00, 'Withrow'),
-(1112, '2019-02-01 ', 50.00, 'Done'),
-(1314, '2018-10-25 ', 75.00, ' Successfull'),
-(1516, '2019-01-06 ', 450.00, 'Withrow')
+(4567, '2018-11-11 09:16:35 ', 500.00, 'Successfull' ),
+(8910, '2019-01-05 16:16:05', 250.00, 'Withrow'),
+(1112, '2019-02-12 18:40:20 ', 50.00, 'Done'),
+(1314, '2018-10-25 08:23:56', 75.00, ' Successfull'),
+(1516, '2019-01-06 12:54:19', 450.00, 'Withrow')
 
 insert into Customer (CustomerID, AccountID, CustomerAddress1, CustomerAddress2, CustomerFirstName, CustomerMiddleInitail, CustomerLastName, City, State_ , ZipCode, EmailAddress, HomePhone, CellPhone, WorkPhoen, SSN, UserLoginID)
 values
-(10001, 4567, 'Unit 2105', '20 Charles Street West', 'Alex', Null, 'Shiate', 'toronto', 'ON', 'M4Y 1R5', 'al.shi@gmail.com' , '12345678', '9101112', '13141516', '171819', 123),
-(10010, 8910, 'Unit 1678', '50 Church Street', 'Akolo', 'M' , 'comel', 'toronto', 'ON', 'L45 r34', 'kolo.Com@gmail.com' , '21222324', '25262728', '29303132', '33343536', 456),
-(10012, 1112, 'No 1314', 'abc blvd', 'bob', null, 'smith', 'ottawa', 'ON', 'k12 345', 'bob@smith.com' , '37383940', '4142434445', '46474849', '5051525354', 789),
-(10016, 1314, '215', 'bloor street', ' john', 'F', 'bolton',' st johns', 'NL','a12 def', 'my@email.com', '55565758', '59606162', '63646566', '67686970', 101),
-(10019, 1516, 'No. 20', 'yong street', 'len', null, 'millan', 'toronto', 'ON','g20 h21', 'your@email.com', '71727374', '75767778', '79808182', '83848586', 111)
+(10001, 4567, 'Unit 2105', '20 Charles Street West', 'Alex', NULL , 'Shiate', 'toronto', 'ON', 'M4Y 1R5', 'al.shi@gmail.com' , '12345678', '9101112', '13141516', '171819', 123),
+(10010, 8910, 'Unit 1678', '50 Church Street', 'Akolo', 'M' , 'comel', 'toronto', 'ON', 'L45 r34', 'kolo.Com@gmail.com' , '21222324', '25262728', '29303132', '333435', 456),
+(10012, 1112, 'No 1314', 'abc blvd', 'bob', Null, 'smith', 'ottawa', 'ON', 'k12 345', 'bob@smith.com' , '37383940', '4142434445', '46474849', '50515', 789),
+(10016, 1314, '215', 'bloor street', ' john', NULL, 'bolton',' st johns', 'NL','a12 def', 'my@email.com', '55565758', '59606162', '63646566', '67686', 101),
+(10019, 1516, 'No. 20', 'yong street', 'len', 'G', 'millan', 'toronto', 'ON','g20 h21', 'your@email.com', '71727374', '75767778', '79808182', '83848', 111)
 
 insert into TransactionLog (TransactionID, TransactionDate, TransactionTypeID, TransactionAmount, NewBalance, AccountID, CustomerID, EmployeeID, UserLoginID)
-(201, , TransactionTypeID, TransactionAmount, NewBalance, AccountID, CustomerID, EmployeeID, UserLoginID)
+values
+(202, '2018-12-09 11:16:35', 1, 200.0000, 6032.0034, 4567, 10001, 987, 123),
+(452, '2017-10-12 12:19:50', 2, 150.0000, 300.0004, 8910, 10010, 654, 456),
+(763, '2019-01-11 18:13:22', 3, 400.0000, 7850.2314, 1112, 10012, 321, 789),
+(976, '2019-02-04 14:33:40', 4, 2000.0000, 23000.4362, 1314, 10016, 445, 101),						   
+(389, '2019-02-12 10:11:39', 5, 300.0000, 700.9316, 1516, 10019, 357, 111)
+
+insert into AccountType (AccountTypeID, AccountTypeDescription)
+values
+(4, 'saving account' ),
+(9, 'checking account' ),
+(16, 'TFSA' ),
+(25, 'RSP'),
+(36, 'Gurnteed')
+
+insert into SavingsInterestRates (InterestSavingsRateID, InterestRateValue, InterestRateDescription)
+values
+( 2, 0.210000000, 'federal' ),
+( 3, 0.300000000, 'Go'),
+( 5, 0.100000000, 'TFA'),
+( 6, 0.000000000, 'Guran'),
+( 1, 0.450000000, 'Check')
+
