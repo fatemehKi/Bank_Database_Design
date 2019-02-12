@@ -1,7 +1,7 @@
 --create database project
 use project
 
-drop table 
+drop table
 Login_account, 
 UserLogins, 
 UserSecurityAnswers,
@@ -18,7 +18,7 @@ FailedTransactionLog,
 TransactionType,
 LoginErrorLog,
 Employee,
-FailedTransactionsErrorType;
+FailedTransactionErrorType;
 
 create table Login_account
 (
@@ -159,87 +159,7 @@ FailedTransactionErrorTypeID tinyint primary key,
 FailedTransactionDescription varchar(50)
 );
 
-
-/*the name faculty_dept_fk is just for naming and used for the joint
-**************Alter table child add constraint constrain_name 
-foreign key (name in the child table) references parent(name in prent tale)*************/
-
-
-/**dropping FKs */
-Alter table Login_Account
-drop constraint FK1_login_account, FK2_login_account
-
-alter table UserSecurityAnswers
-drop constraint FK2_UserSecurityAnswers, FK4_UserSecurityAnswers
-
-Alter table Customer_Account
-drop constraint FK1_Customer_Account, FK2_Customer_Account
-
-Alter table Account
-drop constraint FK4_Account, FK5_Account, FK6_Account
-
-alter table Customer
-drop constraint FK1_Customer, FK2_Customer
-
-Alter table TransactionLog
-drop constraint  FK4_TransactionLog, FK7_TransactionLog, FK6_TransactionLog, FK3_TransactionLog, FK5_TransactionLog
-
-/*foreign keys*/
-alter table Login_Account add constraint FK1_login_account 
-foreign key (UserLoginID) references UserLogins(UserLoginID); 
-
-alter table Login_Account add constraint FK2_login_account 
-foreign key (AccountID) references Account(AccountID); 
-
-alter table UserSecurityAnswers add constraint FK2_UserSecurityAnswers 
-foreign key (UserLoginID) references UserLogins(UserLoginID);
-
-alter table UserSecurityAnswers add constraint FK4_UserSecurityAnswers 
-foreign key (UserSecurityQuestionID) references UserSecurityQuestions(UserSecurityQuestionID);
-
-alter table Customer_Account add constraint FK1_Customer_Account 
-foreign key (AccountID) references Account(AccountID);
-
-alter table Customer_Account add constraint FK2_Customer_Account 
-foreign key (CustomerID) references Customer(CustomerID);
-
-alter table Account add constraint FK4_Account 
-foreign key (AccountTypeID) references AccountType(AccountTypeID);
-
-alter table Account add constraint FK5_Account 
-foreign key (AccountStatusTypeID) references AccountStatusType(AccountStatusTypeID);
-
-alter table Account add constraint FK6_Account 
-foreign key (InterestSavingsRateID) references SavingsInterestRates(InterestSavingsRateID);
-
-alter table OverDraftLog add constraint FK1_OverDraftLog 
-foreign key (AccountID) references Account(AccountID);
-
-alter table TransactionLog add constraint FK7_TransactionLog 
-foreign key (TransactionTypeID) references TransactionType(TransactionTypeID);
-
-alter table TransactionLog add constraint FK6_TransactionLog 
-foreign key (AccountID) references Account(AccountID);
-
-alter table TransactionLog add constraint FK3_TransactionLog 
-foreign key (CustomerID) references Customer(CustomerID);
-
-alter table TransactionLog add constraint FK4_TransactionLog 
-foreign key (EmployeeID) references Employee(EmployeeID);
-
-alter table TransactionLog add constraint FK5_TransactionLog 
-foreign key (UserLoginID) references UserLogins(UserLoginID);
-
-alter table Customer add constraint FK1_Customer 
-foreign key (AccountID) references Account(AccountID);
-
-alter table Customer add constraint FK2_Customer 
-foreign key (UserLoginID) references UserLogins(UserLoginID);
-
-alter table FailedTransactionLog add constraint FK1_FailedTransactionLog 
-foreign key (FailedTransactionErrorTypeID) references FailedTransactionErrorType(FailedTransactionErrorTypeID)
-
-
+/*****************inserting into tables*/
 insert into Login_account (UserLoginID, AccountID )
 values 
 (123, 4567),
@@ -283,11 +203,11 @@ values
 
 insert into Account( AccountID, CurrentBalance, AccountTypeID, AccountStatusTypeID, InterestSavingsRateID)
 values
-(4567, 2000, 4, 5, 2 ),
-(8910, 10010, 9, 6, 3),
-(1112, 10012, 16, 7, 5),
-(1314, 10016, 25, 8, 6),
-(1516, 10019, 36, 9, 1)
+(4567, 2054, 4, 5, 2 ),
+(8910, 10365, 9, 6, 3),
+(1112, 136, 16, 7, 5),
+(1314, 1453, 25, 8, 6),
+(1516, 23019, 36, 9, 1)
 
 insert into OverDraftLog (AccountID, OverDraftDate, OverDraftAmount, OverDraftTransactionXml)
 values
@@ -365,11 +285,11 @@ values
 
 insert into Employee (EmployeeID, EmployeeFirstName, EmployeeMiddleInitial, EmployeeLastName, EmployeesManager)
 values 
-(1001, 'Alison', NULL, 'Camp', 1),
-(1010, 'shannay', 'B', 'smith', 0),
-(1012, 'kian', NULL, 'khan', 1),
-(1016, 'cami', NULL, 'stim', 0),
-(1019, 'shan', NULL, 'bran', 0)
+(987, 'Alison', NULL, 'Camp', 1),
+(654, 'shannay', 'B', 'smith', 0),
+(321, 'kian', NULL, 'khan', 1),
+(445, 'cami', NULL, 'stim', 0),
+(357, 'shan', NULL, 'bran', 0)
 
 insert into FailedTransactionErrorType (FailedTransactionErrorTypeID, FailedTransactionDescription )
 values
@@ -380,3 +300,141 @@ values
 (4, 'not in system')
 
 /******************************************/
+select * from Login_account, 
+UserLogins, 
+UserSecurityAnswers,
+UserSecurityQuestions,
+Customer_Account,
+Account,
+OverDraftLog,
+Customer,
+TransactionLog,
+AccountType,
+SavingsInterestRates,
+AccountStatusType,
+FailedTransactionLog,
+TransactionType,
+LoginErrorLog,
+Employee
+
+select * from FailedTransactionErrorType
+
+/*************foreign key creation*************/
+
+
+/*the name faculty_dept_fk is just for naming and used for the joint
+**************Alter table child add constraint constrain_name 
+foreign key (name in the child table) references parent(name in prent tale)*************/
+
+
+/**dropping FKs */
+Alter table Login_Account
+drop constraint FK1_login_account, FK2_login_account
+
+alter table UserSecurityAnswers
+drop constraint FK2_UserSecurityAnswers, FK4_UserSecurityAnswers
+
+Alter table Customer_Account
+drop constraint FK1_Customer_Account, FK2_Customer_Account
+
+Alter table Account
+drop constraint  FK4_Account, FK5_Account, FK6_Account
+
+Alter table OverDraftLog 
+drop constraint FK1_OverDraftLog
+
+alter table Customer
+drop constraint FK1_Customer, FK2_Customer
+
+Alter table TransactionLog
+drop constraint  FK4_TransactionLog, FK7_TransactionLog, FK6_TransactionLog, FK3_TransactionLog, FK5_TransactionLog
+
+Alter table FailedTransactionLog
+drop constraint FK1_FailedTransactionLog
+
+
+/*************creating foreign keys*/
+alter table Login_Account add constraint FK1_login_account 
+foreign key (UserLoginID) references UserLogins(UserLoginID); 
+
+alter table Login_Account add constraint FK2_login_account 
+foreign key (AccountID) references Account(AccountID); 
+
+alter table UserSecurityAnswers add constraint FK2_UserSecurityAnswers 
+foreign key (UserLoginID) references UserLogins(UserLoginID);
+
+alter table UserSecurityAnswers add constraint FK4_UserSecurityAnswers 
+foreign key (UserSecurityQuestionID) references UserSecurityQuestions(UserSecurityQuestionID);
+
+alter table Customer_Account add constraint FK1_Customer_Account 
+foreign key (AccountID) references Account(AccountID);
+
+alter table Customer_Account add constraint FK2_Customer_Account 
+foreign key (CustomerID) references Customer(CustomerID);
+
+alter table Account add constraint FK4_Account 
+foreign key (AccountTypeID) references AccountType(AccountTypeID);
+
+alter table Account add constraint FK5_Account 
+foreign key (AccountStatusTypeID) references AccountStatusType(AccountStatusTypeID);
+
+alter table Account add constraint FK6_Account 
+foreign key (InterestSavingsRateID) references SavingsInterestRates(InterestSavingsRateID);
+
+alter table OverDraftLog add constraint FK1_OverDraftLog 
+foreign key (AccountID) references Account(AccountID);
+
+alter table TransactionLog add constraint FK7_TransactionLog 
+foreign key (TransactionTypeID) references TransactionType(TransactionTypeID);
+
+alter table TransactionLog add constraint FK6_TransactionLog 
+foreign key (AccountID) references Account(AccountID);
+
+alter table TransactionLog add constraint FK3_TransactionLog 
+foreign key (CustomerID) references Customer(CustomerID);
+
+alter table TransactionLog add constraint FK4_TransactionLog 
+foreign key (EmployeeID) references Employee(EmployeeID);
+
+alter table TransactionLog add constraint FK5_TransactionLog 
+foreign key (UserLoginID) references UserLogins(UserLoginID);
+
+alter table Customer add constraint FK1_Customer 
+foreign key (AccountID) references Account(AccountID);
+
+alter table Customer add constraint FK2_Customer 
+foreign key (UserLoginID) references UserLogins(UserLoginID);
+
+alter table FailedTransactionLog add constraint FK1_FailedTransactionLog 
+foreign key (FailedTransactionErrorTypeID) references FailedTransactionErrorType(FailedTransactionErrorTypeID)
+
+
+/********************end of phase1****************************/
+
+/******Phase 2******/
+/*Q1*/
+drop view VC_ON_Address
+
+CREATE VIEW VC_ON_Address
+AS
+SELECT * from Customer where Customer.State_= 'ON'
+
+select * from VC_ON_Address
+
+/*Q2*/
+CREATE VIEW VA_high_balance2
+AS
+SELECT CustomerID, concat(CustomerFirstName, ' ', CustomerMiddleInitail,' ', CustomerLastName) as Customer_Name from customer 
+join Account
+on customer.AccountID = account.AccountID
+join SavingsInterestRates
+on account.InterestSavingsRateID = SavingsInterestRates.InterestSavingsRateID
+where (CurrentBalance + (CurrentBalance*InterestRateValue))> 15000
+
+select * from VA_high_balance2
+
+/*Q3*/
+Create VIEW 
+
+/*Q3*/
+
