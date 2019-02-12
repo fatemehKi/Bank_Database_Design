@@ -1,7 +1,7 @@
 --create database project
 use project
 
-drop table 
+drop table FailedTransactionLog
 Login_account, 
 UserLogins, 
 UserSecurityAnswers,
@@ -14,11 +14,11 @@ TransactionLog,
 AccountType,
 SavingsInterestRates,
 AccountStatusType,
-FailedTransctionLog,
+FailedTransactionLog,
 TransactionType,
 LoginErrorLog,
 Employee,
-FaieldTransactionsErrorType;
+FailedTransactionsErrorType;
 
 create table Login_account
 (
@@ -57,7 +57,7 @@ create table Account
 AccountID int primary key,
 CurrentBalance int,
 AccountTypeID tinyint,
-AccountSttusTypeID tinyint,
+AccountStatusTypeID tinyint,
 InterestSavingsRateID tinyint
 );
 
@@ -66,7 +66,7 @@ Create table OverDraftLog
 AccountID int,
 OverDraftDate datetime,
 OverDraftAmount money,
-OverDraftTransactionXml xml
+OverDraftTransactionXml varchar(20)
 );
 
 Create table Customer
@@ -121,12 +121,12 @@ AccountStatusTypeID tinyint primary key,
 AccountStatusDescription varchar(30)
 );
 
-Create table FailedTransctionLog
+Create table FailedTransactionLog
 (
 FailedTransactionID int primary key,
 FailedTransactionErrorTypeID tinyint,
 FailedTransactionErrorTime varchar(50),
-FailedTransactionXML xml
+FailedTransactionXML varchar(20)
 );
 
 Create table TransactionType
@@ -141,7 +141,7 @@ create table LoginErrorLog
 (
 ErrorLogID int primary key,
 ErrorTime datetime,
-FailedTransactionXML xml
+FailedTransactionXML varchar(20)
 );
 
 Create table Employee
@@ -152,7 +152,7 @@ EmployeeMiddleInitial char(1),
 EmployeesManager bit
 );
 
-create table FaieldTransactionsErrorType
+create table FailedTransactionErrorType
 (
 FailedTransactionErrorTypeID tinyint primary key,
 FailedTransactionDescription varchar(50)
@@ -162,14 +162,23 @@ FailedTransactionDescription varchar(50)
 /*the name faculty_dept_fk is just for naming and used for the joint
 **************Alter table child add constraint constrain_name 
 foreign key (name in the child table) references parent(name in prent tale)*************/
-/* 
+
+
+/**dropping FKs */
 Alter table Login_Account
 drop constraint FK1_login_account, FK2_login_account
 
 alter table UserSecurityAnswers
 drop constraint FK2_UserSecurityAnswers, FK4_UserSecurityAnswers
-*/ 
 
+Alter table Customer_Account
+drop constraint FK1_Customer_Account, FK2_Customer_Account
+
+Alter table Account
+drop constraint FK4_Account, FK5_Account, FK6_Account
+
+
+/*foreign keys*/
 alter table Login_Account add constraint FK1_login_account 
 foreign key (UserLoginID) references UserLogins(UserLoginID); 
 
@@ -210,5 +219,102 @@ alter table TransactionLog add constraint FK3_TransactionLog
 foreign key (CustomerID) references Customer(CustomerID);
 
 alter table TransactionLog add constraint FK4_TransactionLog 
-foreign key (EmployeeID) references Customer(CustomerID);
+foreign key (EmployeeID) references Employee(EmployeeID);
+
+alter table TransactionLog add constraint FK5_TransactionLog 
+foreign key (UserLoginID) references UserLogins(UserLoginID);
+
+alter table Customer add constraint FK1_Customer 
+foreign key (AccountID) references Account(AccountID);
+
+alter table Customer add constraint FK2_Customer 
+foreign key (UserLoginID) references UserLogins(UserLoginID);
+
+alter table FailedTransactionLog add constraint FK1_FailedTransactionLog 
+foreign key (FailedTransactionErrorTypeID) references FailedTransactionErrorType(FailedTransactionErrorTypeID)
+
+
+ Login_account, 
+UserLogins, 
+UserSecurityAnswers,
+UserSecurityQuestions,
+Customer_Account,
+Account,
+OverDraftLog,
+Customer,
+TransactionLog,
+AccountType,
+SavingsInterestRates,
+AccountStatusType,
+FailedTransctionLog,
+TransactionType,
+LoginErrorLog,
+Employee,
+FailedTransactionsErrorType;
+
+insert into Login_account (UserLoginID, AccountID )
+values 
+(123, 4567),
+(456, 8910),
+(789, 1112),
+(101, 1314),
+(111, 1516)
+
+insert into UserLogins (UserLoginID, UserLogin, UserPassword)
+values 
+(123, 'fati', 'fkia2'),
+(456, 'kian', 'khan3'),
+(789, 'ahma', 'shai'),
+(101, 'joem', 'satu42'),
+(111, 'sabi', 'krenA')
+
+insert into UserSecurityAnswers( UserLoginID, UserSecurityanswer, UserSecurityQuestionID)
+values
+(123, 'MOM', 20),
+(456, 'UofT', 30),
+(789, 'Tehran', 40),
+(101, 'DAD', 50),
+(111, 'Poppy', 60)
+
+insert into UserSecurityQuestions (UserSecurityQuestionID, UserSecurityQuestion)
+values 
+(10, 'your favorite place?'),
+(20, 'your favorite person?'),
+(30, 'ypur school'),
+(40, 'Place you born'),
+(50, 'your hero'),
+(60, ' your pet name?')
+
+insert into Customer_Account( AccountID, CustomerID)
+values
+(4567, 10001),
+(8910, 10010),
+(1112, 10012),
+(1314, 10016),
+(1516, 10019)
+
+insert into Account( AccountID, CurrentBalance, AccountTypeID, AccountStatusTypeID, InsertSavingRateID)
+values
+(4567, 2000, 4, 500, 2 ),
+(8910, 10010, 9, 600, 3),
+(1112, 10012, 16, 700, 5),
+(1314, 10016, 25, 800, 6),
+(1516, 10019, 36, 900, 1)
+
+insert into OverDraftLog (AccountID, OverDraftDate, OverDraftAmount, OverDraftTransactionXml)
+values
+(4567, '2018-11-11 ', 500.00, 'Successfull' ),
+(8910, '2019-01-05 ', 250.00, 'Withrow'),
+(1112, '2019-02-01 ', 50.00, 'Done'),
+(1314, '2018-10-25 ', 75.00, ' Successfull'),
+(1516, '2019-01-06 ', 450.00, 'Withrow')
+
+insert into Customer (CustomerID, AccountID, CustomerAddress1, CustomerAddress2, CustomerFirstName, CustomerMiddleInitail, CustomerLastName, City, State_ , ZipCode, EmailAddress, HomePhone, CellPhone, WorkPhoen, SSN, UserLoginID)
+values
+(10001, 4567, 'Unit 2105', '20 Charles Street West', 'Alex', Null, 'Shiate', 'toronto', 'ON', 'M4Y 1R5', 'al.shi@gmail.com' , '12345678', '9101112', '13141516', '171819', 123)
+(10010, 8910, 'Unit 1678', '50 Church Street', 'Akolo', 'M' , 'comel', 'toronto', 'ON', 'L45 r34', 'kolo.Com@gmail.com' , '212223142, '9101112', '13141516', '171819', 123),
+(10012, 1112),
+(10016, 1314),
+(10019, 1516)
+
 
