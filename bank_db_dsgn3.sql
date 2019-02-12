@@ -1,7 +1,7 @@
 --create database project
 use project
 
-drop table
+drop table 
 Login_account, 
 UserLogins, 
 UserSecurityAnswers,
@@ -149,6 +149,7 @@ Create table Employee
 EmployeeID int primary key,
 EmployeeFirstName varchar(25),
 EmployeeMiddleInitial char(1),
+EmployeeLastName varchar(25),
 EmployeesManager bit
 );
 
@@ -179,6 +180,9 @@ drop constraint FK4_Account, FK5_Account, FK6_Account
 
 alter table Customer
 drop constraint FK1_Customer, FK2_Customer
+
+Alter table TransactionLog
+drop constraint  FK4_TransactionLog, FK7_TransactionLog, FK6_TransactionLog, FK3_TransactionLog, FK5_TransactionLog
 
 /*foreign keys*/
 alter table Login_Account add constraint FK1_login_account 
@@ -279,11 +283,11 @@ values
 
 insert into Account( AccountID, CurrentBalance, AccountTypeID, AccountStatusTypeID, InterestSavingsRateID)
 values
-(4567, 2000, 4, 500, 2 ),
-(8910, 10010, 9, 600, 3),
-(1112, 10012, 16, 700, 5),
-(1314, 10016, 25, 800, 6),
-(1516, 10019, 36, 900, 1)
+(4567, 2000, 4, 5, 2 ),
+(8910, 10010, 9, 6, 3),
+(1112, 10012, 16, 7, 5),
+(1314, 10016, 25, 8, 6),
+(1516, 10019, 36, 9, 1)
 
 insert into OverDraftLog (AccountID, OverDraftDate, OverDraftAmount, OverDraftTransactionXml)
 values
@@ -325,3 +329,54 @@ values
 ( 6, 0.000000000, 'Guran'),
 ( 1, 0.450000000, 'Check')
 
+insert into AccountStatusType (AccountStatusTypeID, AccountStatusDescription)
+values
+(5, 'not reliable'),
+(6, 'moderate'),
+(7, 'good'),
+(8, 'very good'),
+(9, 'excellent')
+
+insert into FailedTransactionLog (FailedTransactionID, FailedTransactionErrorTypeID, FailedTransactionErrorTime, FailedTransactionXML)
+values
+(56, 2, '2018-10-09 11:16:35', 'declined' ),
+(23, 5, '2017-10-12 12:19:50', 'declined'),
+(72, 3, '2019-01-11 16:13:22', 'N/A'),
+(53, 1, '2019-02-04 10:33:40', 'declined'),
+(38, 4, '2019-02-11 10:11:39', 'N/A')
+
+
+insert into TransactionType (TransactionTypeID, TransactionTypeName, TransactionTypeDescription, TransactionFeemount)
+values
+(1, 'deposit', 'add fund', '1.6543'),
+(2, 'ATM', 'withrow fund', '1.0300'),
+(3, 'online', 'web-base store', '2.6543'),
+(4, 'check', 'paper check', '1.0035'),
+(5, 'charge', 'arecord purchase', '3.6543')
+
+
+insert into LoginErrorLog (ErrorLogID, ErrorTime, FailedTransactionXML)
+values
+(98, '2018-10-09 19:16:35', 'declining'),
+(76, '2017-11-15 13:45:09', 'try agin'),
+(54, '2010-01-11 16:13:22', 'declining'),
+(32, '2009-02-04 10:33:40', 'N/A'),
+(10, '2019-02-11 10:11:39', 'declining')
+
+insert into Employee (EmployeeID, EmployeeFirstName, EmployeeMiddleInitial, EmployeeLastName, EmployeesManager)
+values 
+(1001, 'Alison', NULL, 'Camp', 1),
+(1010, 'shannay', 'B', 'smith', 0),
+(1012, 'kian', NULL, 'khan', 1),
+(1016, 'cami', NULL, 'stim', 0),
+(1019, 'shan', NULL, 'bran', 0)
+
+insert into FailedTransactionErrorType (FailedTransactionErrorTypeID, FailedTransactionDescription )
+values
+(2, 'not enough money' ),
+(5, 'password incorrect'),
+(3, 'login incorrect'),
+(1, 'no access'),
+(4, 'not in system')
+
+/******************************************/
