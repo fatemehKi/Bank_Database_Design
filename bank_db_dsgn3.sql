@@ -434,7 +434,35 @@ where (CurrentBalance + (CurrentBalance*InterestRateValue))> 15000
 select * from VA_high_balance2
 
 /*Q3*/
-Create VIEW 
+Create VIEW VA_SaChe_Cnt
+AS
+SELECT count(*) as number_of_account, AccountTypeDescription from AccountType
+join Account
+on Account.AccountTypeID = AccountType.AccountTypeID
+join Customer
+on Customer.AccountID = Account.AccountID
+where AccountType.AccountTypeDescription Like 'saving account' or  AccountType.AccountTypeDescription Like 'checking account'
+group by AccountTypeDescription
+select * from VA_SaChe_Cnt
 
-/*Q3*/
+--second response
+SELECT  count(AccountTypeDescription) as number_of_saving_checking from AccountType
+where AccountType.AccountTypeDescription Like 'saving account' or AccountType.AccountTypeDescription Like 'checking_account'
 
+/*Q4*/
+Create View V_get_userpass
+as
+Select UserLogin, UserPassword, accountID from  UserLogins
+full join Login_account
+on Login_account.UserLoginID = UserLogins.UserLoginID
+select * from V_get_userpass
+
+/*Q5*/
+create view v_ovdraft
+as
+Select OverDraftAmount, CustomerID from OverDraftLog
+right join Customer_Account
+on OverDraftLog.AccountID = Customer_Account.AccountID
+select * from v_ovdraft
+
+/*Q6*/
