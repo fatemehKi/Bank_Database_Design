@@ -200,7 +200,7 @@ alter table Customer_Account add constraint FK2_Customer_Account
 foreign key (CustomerID) references Customer(CustomerID);
 
 alter table Account add constraint FK4_Account 
-foreign key (AccountTypeID) references AccountType(AccountTypeID);
+foreign key (AccountTypeID) references AccountType(AccountTypeID); 
 
 alter table Account add constraint FK5_Account 
 foreign key (AccountStatusTypeID) references AccountStatusType(AccountStatusTypeID);
